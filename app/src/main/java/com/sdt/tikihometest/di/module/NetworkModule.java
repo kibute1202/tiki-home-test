@@ -1,11 +1,9 @@
 package com.sdt.tikihometest.di.module;
 
-import android.app.Application;
 import android.content.Context;
 
-import com.sdt.tikihometest.App;
 import com.sdt.tikihometest.R;
-import com.sdt.tikihometest.data.remote.KeywordApi;
+import com.sdt.tikihometest.data.remote.api.KeywordApi;
 import com.sdt.tikihometest.data.remote.NetworkHelper;
 import com.sdt.tikihometest.utils.Constants;
 

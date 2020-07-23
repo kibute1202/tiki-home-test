@@ -1,4 +1,4 @@
-package com.sdt.tikihometest.data.remote;
+package com.sdt.tikihometest.data.remote.api;
 
 import java.util.List;
 

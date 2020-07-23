@@ -1,6 +1,6 @@
 package com.sdt.tikihometest.data.source.keyword;
 
-import com.sdt.tikihometest.data.remote.KeywordApi;
+import com.sdt.tikihometest.data.remote.api.KeywordApi;
 
 import java.util.List;
 

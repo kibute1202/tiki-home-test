@@ -1,13 +1,17 @@
 package com.sdt.tikihometest.ui.base;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
@@ -21,9 +25,11 @@ import com.sdt.tikihometest.utils.DialogUtils;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerAppCompatActivity;
+import dagger.android.support.DaggerFragment;
 
-public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseViewModel> extends DaggerAppCompatActivity {
+public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseViewModel> extends DaggerFragment {
+
+    protected BaseActivity activity;
 
     @Inject
     protected VM viewModel;
@@ -42,68 +48,49 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     protected abstract Class<VM> getViewModelClass();
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof BaseActivity) {
+            this.activity = (BaseActivity) context;
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this, viewModelFactory).get(getViewModelClass());
-        performDataBinding();
-        observe();
+        viewDataBinding = DataBindingUtil.inflate(inflater, layoutResId(), container, false);
+        viewDataBinding.setVariable(BR.viewModel, viewModel);
+        viewDataBinding.setLifecycleOwner(getViewLifecycleOwner());
+        viewDataBinding.executePendingBindings();
+        return viewDataBinding.getRoot();
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        viewModel.getOptionalErrorEvent().observe(getViewLifecycleOwner(), this::handleOptionError);
+
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
+    public void onDestroyView() {
         hideAlert();
         hideLoading();
-        super.onDestroy();
-    }
-
-    private void performDataBinding() {
-        viewDataBinding = DataBindingUtil.setContentView(this, layoutResId());
-        viewDataBinding.setVariable(BR.viewModel, viewModel);
-        viewDataBinding.executePendingBindings();
-    }
-
-    private void observe() {
-
-        viewModel.getOptionalErrorEvent().observe(this, this::handleOptionError);
-
-    }
-
-    protected void showLoading() {
-        if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(this);
-        }
-        loadingDialog.show();
-    }
-
-    protected void hideLoading() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
+        super.onDestroyView();
     }
 
     private void handleOptionError(OptionalError optionalError) {
@@ -130,7 +117,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         if (!TextUtils.isEmpty(error)) {
             hideAlert();
             alertDialog = DialogUtils.showDialog(
-                this,
+                getContext(),
                 error,
                 getString(R.string.ok)
             );
@@ -138,6 +125,24 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     protected void hideAlert() {
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+    }
+
+    protected void showLoading() {
+        if (getContext() == null) return;
+
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(getContext());
+        }
+        loadingDialog.show();
+    }
+
+    protected void hideLoading() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 
     protected void addFragment(@IdRes int containerId,
@@ -145,7 +150,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                                String tag,
                                boolean addToBackStack,
                                int transition) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(containerId, fragment, tag);
         commitTransaction(transaction, addToBackStack, transition);
     }
@@ -155,7 +160,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                                    String tag,
                                    boolean addToBackStack,
                                    int transition) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(containerId, fragment, tag);
         commitTransaction(transaction, addToBackStack, transition);
     }

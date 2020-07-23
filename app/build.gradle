@@ -33,7 +33,7 @@ android {
         debug {
             applicationIdSuffix ".debug"
             resValue("string", "app_name", "Debug Tiki Home Test")
-            resValue("string", "base_url", "https://raw.githubusercontent.com/tikivn/android-home-test/v2")
+            resValue("string", "base_url", "https://raw.githubusercontent.com/tikivn/android-home-test/v2/")
         }
         release {
             minifyEnabled true
@@ -41,7 +41,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             resValue("string", "app_name", "Tiki Home Test")
-            resValue("string", "base_url", "https://raw.githubusercontent.com/tikivn/android-home-test/v2")
+            resValue("string", "base_url", "https://raw.githubusercontent.com/tikivn/android-home-test/v2/")
         }
     }
 
@@ -69,9 +69,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
 
     // view model
-//    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
-//    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
 
     // networking
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"

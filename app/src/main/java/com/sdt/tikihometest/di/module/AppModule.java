@@ -3,6 +3,9 @@ package com.sdt.tikihometest.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.sdt.tikihometest.utils.rx.AppSchedulerProvider;
+import com.sdt.tikihometest.utils.rx.SchedulerProvider;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -13,10 +16,10 @@ import dagger.Provides;
 })
 public class AppModule {
 
-//    @Provides
-//    @Singleton
-//    Context provideContext(Application application) {
-//        return application;
-//    }
+    @Provides
+    @Singleton
+    SchedulerProvider provideSchedulerProvider() {
+        return new AppSchedulerProvider();
+    }
 
 }
