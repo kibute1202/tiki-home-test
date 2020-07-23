@@ -9,12 +9,12 @@ import androidx.annotation.NonNull;
 
 import com.sdt.tikihometest.R;
 
-public class ProcessingDialog {
+public class LoadingDialog {
 
     private Context context;
     private Dialog dialog;
 
-    public ProcessingDialog(@NonNull Context context) {
+    public LoadingDialog(@NonNull Context context) {
         this.context = context;
         init();
     }
