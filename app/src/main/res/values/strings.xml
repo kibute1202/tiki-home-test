@@ -9,5 +9,6 @@
 
   <!--common-->
   <string name="ok">OK</string>
+  <string name="hot_key">Từ khoá hot</string>
 
 </resources>

@@ -32,7 +32,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
-            resValue("string", "app_name", "Debug Tiki Home Test")
+            resValue("string", "app_name", "Tiki Home Test")
             resValue("string", "base_url", "https://raw.githubusercontent.com/tikivn/android-home-test/v2/")
         }
         release {
