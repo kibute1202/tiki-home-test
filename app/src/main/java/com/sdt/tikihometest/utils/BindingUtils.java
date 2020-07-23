@@ -17,10 +17,10 @@ public final class BindingUtils {
 
     @BindingAdapter({"formatKeyword"})
     public static void formatKeywordOnTwoLine(TextView textView, String keyword) {
-        textView.setText(formatElement(keyword));
+        textView.setText(formatKeyword(keyword));
     }
 
-    static String formatElement(String element) {
+    static String formatKeyword(String element) {
         if (element != null && element.length() > 0) {
             String[] splitElement = element.split(" ");
             int splitLength = splitElement.length;
