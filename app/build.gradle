@@ -70,6 +70,7 @@ dependencies {
 
     // view model
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.lifecycleVersion"
 
     // networking
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"

@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class KeywordRemoteDataSource implements KeywordDataSource {
 
@@ -18,7 +18,7 @@ public class KeywordRemoteDataSource implements KeywordDataSource {
     }
 
     @Override
-    public Observable<List<String>> getKeywords() {
+    public Single<List<String>> getKeywords() {
         return api.getKeywords();
     }
 

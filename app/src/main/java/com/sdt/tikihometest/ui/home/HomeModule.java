@@ -1,4 +1,4 @@
-package com.sdt.tikihometest.ui.main;
+package com.sdt.tikihometest.ui.home;
 
 import androidx.lifecycle.ViewModel;
 
@@ -12,11 +12,11 @@ import dagger.multibindings.IntoMap;
 @Module(includes = {
     ViewModelBuilder.class
 })
-public abstract class MainModule {
+public abstract class HomeModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel.class)
-    public abstract ViewModel bindViewModel(MainViewModel viewModel);
+    @ViewModelKey(HomeViewModel.class)
+    public abstract ViewModel bindViewModel(HomeViewModel viewModel);
 
 }

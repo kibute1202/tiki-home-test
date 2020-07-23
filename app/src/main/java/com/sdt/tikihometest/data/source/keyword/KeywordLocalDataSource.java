@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class KeywordLocalDataSource implements KeywordDataSource {
 
@@ -13,7 +13,7 @@ public class KeywordLocalDataSource implements KeywordDataSource {
     }
 
     @Override
-    public Observable<List<String>> getKeywords() {
+    public Single<List<String>> getKeywords() {
         return null;
     }
 

@@ -7,12 +7,10 @@ import android.text.TextUtils;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.sdt.tikihometest.BR;
 import com.sdt.tikihometest.R;
@@ -27,8 +25,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
 
     @Inject
     protected VM viewModel;
-    @Inject
-    protected ViewModelProvider.Factory viewModelFactory;
 
     protected V viewDataBinding;
 
@@ -39,12 +35,9 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     @LayoutRes
     int layoutResId();
 
-    protected abstract Class<VM> getViewModelClass();
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this, viewModelFactory).get(getViewModelClass());
         performDataBinding();
         observe();
     }
@@ -138,6 +131,9 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     protected void hideAlert() {
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
     }
 
     protected void addFragment(@IdRes int containerId,
@@ -165,6 +161,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                                    int transition) {
         if (addToBackStack) transaction.addToBackStack(null);
         transaction.setTransition(transition);
+        transaction.commit();
     }
 
 }

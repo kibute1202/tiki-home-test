@@ -1,6 +1,7 @@
 package com.sdt.tikihometest.ui.base;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 import com.sdt.tikihometest.data.remote.BaseException;
@@ -15,6 +16,8 @@ import java.net.UnknownHostException;
 
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 public abstract class BaseViewModel extends ViewModel {
 
@@ -50,6 +53,8 @@ public abstract class BaseViewModel extends ViewModel {
     }
 
     protected void onLoadingError(Throwable throwable) {
+        Timber.e(throwable);
+
         if (throwable instanceof UnknownHostException || throwable instanceof ConnectException) {
             optionalErrorEvent.setValue(OptionalError.NO_INTERNET_CONNECTION);
         } else if (throwable instanceof SocketTimeoutException) {
@@ -108,6 +113,10 @@ public abstract class BaseViewModel extends ViewModel {
 
     protected Scheduler computation() {
         return schedulerProvider.computation();
+    }
+
+    protected void addDisposable(Disposable disposable) {
+        compositeDisposable.add(disposable);
     }
 
     @Override

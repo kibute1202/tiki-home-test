@@ -1,7 +1,7 @@
 package com.sdt.tikihometest.di;
 
-import com.sdt.tikihometest.ui.main.MainActivity;
-import com.sdt.tikihometest.ui.main.MainModule;
+import com.sdt.tikihometest.ui.home.HomeActivity;
+import com.sdt.tikihometest.ui.home.HomeModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,8 +10,8 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = {
-        MainModule.class
+        HomeModule.class
     })
-    public abstract MainActivity bindActivity();
+    public abstract HomeActivity bindActivity();
 
 }

@@ -1,11 +1,14 @@
 package com.sdt.tikihometest.data.source.keyword;
 
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
+
 
 public class DefaultKeywordRepository implements KeywordRepository {
 
@@ -20,7 +23,7 @@ public class DefaultKeywordRepository implements KeywordRepository {
     }
 
     @Override
-    public Observable<List<String>> getKeywords() {
+    public Single<List<String>> getKeywords() {
         return remote.getKeywords();
     }
 

@@ -3,10 +3,11 @@ package com.sdt.tikihometest.data.source.keyword;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
+
 
 public interface KeywordRepository {
 
-    Observable<List<String>> getKeywords();
+    Single<List<String>> getKeywords();
 
 }

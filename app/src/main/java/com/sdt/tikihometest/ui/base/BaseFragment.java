@@ -33,8 +33,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
 
     @Inject
     protected VM viewModel;
-    @Inject
-    protected ViewModelProvider.Factory viewModelFactory;
 
     protected V viewDataBinding;
 
@@ -44,8 +42,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     protected abstract
     @LayoutRes
     int layoutResId();
-
-    protected abstract Class<VM> getViewModelClass();
 
     @Override
     public void onAttach(Context context) {
@@ -60,7 +56,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this, viewModelFactory).get(getViewModelClass());
         viewDataBinding = DataBindingUtil.inflate(inflater, layoutResId(), container, false);
         viewDataBinding.setVariable(BR.viewModel, viewModel);
         viewDataBinding.setLifecycleOwner(getViewLifecycleOwner());
