@@ -5,7 +5,6 @@ import android.content.Context;
 import com.sdt.tikihometest.App;
 import com.sdt.tikihometest.di.module.AppModule;
 import com.sdt.tikihometest.di.module.NetworkModule;
-import com.sdt.tikihometest.di.module.RepositoriesModule;
 
 import javax.inject.Singleton;
 
@@ -23,7 +22,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
     AndroidSupportInjectionModule.class,
     AppModule.class,
     NetworkModule.class,
-    RepositoriesModule.class,
+    ActivityBuilder.class,
 })
 public interface ApplicationComponent extends AndroidInjector<App> {
 
