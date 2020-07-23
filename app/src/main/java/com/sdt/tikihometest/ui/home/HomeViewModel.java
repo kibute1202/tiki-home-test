@@ -7,6 +7,7 @@ import com.sdt.tikihometest.ui.base.BaseViewModel;
 import com.sdt.tikihometest.utils.rx.SchedulerProvider;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -17,7 +18,7 @@ public class HomeViewModel extends BaseViewModel {
 
     private KeywordRepository keywordRepository;
 
-    private MutableLiveData<String> keywordsLiveData;
+    private MutableLiveData<List<String>> keywordsLiveData;
 
     @Inject
     public HomeViewModel(SchedulerProvider schedulerProvider,
@@ -37,9 +38,13 @@ public class HomeViewModel extends BaseViewModel {
             .observeOn(ui())
             .subscribe(keywords -> {
                 Timber.i("Keywords: %s", Arrays.toString(keywords.toArray()));
+                keywordsLiveData.setValue(keywords);
             }, this::onLoadingError);
 
         addDisposable(disposable);
     }
 
+    public MutableLiveData<List<String>> getKeywordsLiveData() {
+        return keywordsLiveData;
+    }
 }
