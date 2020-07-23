@@ -1,6 +1,9 @@
 package com.sdt.tikihometest.ui.home;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
@@ -10,15 +13,11 @@ import com.sdt.tikihometest.R;
 import com.sdt.tikihometest.databinding.ItemKeyWordBinding;
 import com.sdt.tikihometest.ui.base.BaseAdapter;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
-
-import timber.log.Timber;
 
 public class KeywordAdapter extends BaseAdapter<String, ItemKeyWordBinding> {
 
-    private String[] randomColors = {
+    private final String[] randomColors = {
         "#b71c1c",
         "#880e4f",
         "#9c27b0",
@@ -34,7 +33,9 @@ public class KeywordAdapter extends BaseAdapter<String, ItemKeyWordBinding> {
         "#607d8b",
     };
 
-    private ArrayMap<String, Integer> selectedColorMap = new ArrayMap<>();
+    private final ArrayMap<String, Integer> selectedColorMap = new ArrayMap<>();
+
+    private OnItemClickListener itemClickListener;
 
     public KeywordAdapter() {
         super(new DiffUtil.ItemCallback<String>() {
@@ -57,22 +58,47 @@ public class KeywordAdapter extends BaseAdapter<String, ItemKeyWordBinding> {
 
     @Override
     protected void bindView(ItemKeyWordBinding viewDataBinding, String item, int position) {
+        Integer color;
         if (!selectedColorMap.containsKey(item)) {
-            int color = randomColor();
+            color = randomColor();
             selectedColorMap.put(item, color);
-            viewDataBinding.cardView.setCardBackgroundColor(color);
         } else {
-            Integer color = selectedColorMap.get(item);
+            color = selectedColorMap.get(item);
             if (color == null) {
                 color = randomColor();
             }
-            viewDataBinding.cardView.setCardBackgroundColor(color);
         }
+        viewDataBinding.tvKeyword.setBackground(
+            createCornerBackground(viewDataBinding.getRoot().getContext(), color));
+
+        viewDataBinding.getRoot().setOnClickListener(v -> {
+            if (itemClickListener != null)
+                itemClickListener.onClick(item);
+        });
+    }
+
+    private ShapeDrawable createCornerBackground(Context context, int color) {
+        float cornerRadius = context.getResources().getDimension(R.dimen.keyword_radius);
+        RoundRectShape roundRectShape = new RoundRectShape(new float[]{
+            cornerRadius, cornerRadius, cornerRadius, cornerRadius,
+            cornerRadius, cornerRadius, cornerRadius, cornerRadius}
+            , null, null);
+        ShapeDrawable shapeDrawable = new ShapeDrawable(roundRectShape);
+        shapeDrawable.getPaint().setColor(color);
+        return shapeDrawable;
     }
 
     private int randomColor() {
         Random random = new Random();
         int randomIndex = random.nextInt(randomColors.length);
         return Color.parseColor(randomColors[randomIndex]);
+    }
+
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onClick(String item);
     }
 }

@@ -1,7 +1,9 @@
 package com.sdt.tikihometest.ui.home;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.sdt.tikihometest.R;
@@ -34,8 +36,11 @@ public class HomeActivity extends BaseActivity<ActivityMainBinding, HomeViewMode
         keywordAdapter = new KeywordAdapter();
         viewDataBinding.rvKeywords.setLayoutManager(
             new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        viewDataBinding.rvKeywords.setHasFixedSize(false);
+        viewDataBinding.rvKeywords.setHasFixedSize(true);
         viewDataBinding.rvKeywords.setAdapter(keywordAdapter);
+
+        keywordAdapter.setItemClickListener(item ->
+            Toast.makeText(this, item, Toast.LENGTH_SHORT).show());
     }
 
     private void setData(List<String> keywords) {
